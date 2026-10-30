@@ -477,6 +477,15 @@ public class Play extends AppCompatActivity
         super.onStart();
 
         originalIntent = getIntent();
+// --- POPRAWKA DLA PLEZY ---
+if (originalIntent != null && originalIntent.hasExtra("position")) {
+    viewOffset = originalIntent.getIntExtra("position", 0);
+    if (viewOffset == 0) {
+        viewOffset = (int) originalIntent.getLongExtra("position", 0L);
+    }
+}
+// --- KONIEC POPRAWKI ---
+
 
         String inputString = originalIntent.getDataString();
         directPath = inputString;
