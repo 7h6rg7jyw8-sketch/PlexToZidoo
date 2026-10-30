@@ -1,7 +1,7 @@
 # 🚀 PlexToZidoo Mod (Plezy Client Support)
 
 
-👉 **[DOWNLOAD APK](https://github.com)**
+👉 **[DOWNLOAD APK]([https://github.com](https://github.com/7h6rg7jyw8-sketch/PlexToZidoo/releases/tag/v3.0.0-Plezy))**
 
 **** This is a modified version of PlexToZidoo that adds full support for the alternative **Plezy** client. It fixes the video resume/offset point issue by properly intercepting the position parameter sent by Plezy. Maintains 100% backwards compatibility with the official Plex app and all Zidoo models.
 
