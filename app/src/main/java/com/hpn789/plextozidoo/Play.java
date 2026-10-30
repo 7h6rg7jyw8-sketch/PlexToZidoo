@@ -566,17 +566,26 @@ if (originalIntent != null && originalIntent.hasExtra("position")) {
             else
             {
                 try
-                {
-                    viewOffset = originalIntent.getIntExtra("viewOffset", 0);
-                }
-                catch (Exception e)
-                {
-                    // There is some strange error that is seen on newer levels of Plex such that if
-                    // I just try again it will work.  I've only seen this on the first extra we try
-                    // and read so we'll just ignore the first error and hope the second one succeeds
-                    viewOffset = originalIntent.getIntExtra("viewOffset", 0);
-                }
-                mediaIndex = originalIntent.getIntExtra("mediaIndex", -1);
+{
+    if (originalIntent.hasExtra("position")) {
+        long tempPos = originalIntent.getIntExtra("position", 0);
+        if (tempPos == 0) {
+            tempPos = originalIntent.getLongExtra("position", 0L);
+        }
+        viewOffset = (int) tempPos;
+    } else {
+        viewOffset = originalIntent.getIntExtra("viewOffset", 0);
+    }
+}
+catch (Exception e)
+{
+    if (originalIntent.hasExtra("position")) {
+        viewOffset = (int) originalIntent.getLongExtra("position", 0L);
+    } else {
+        viewOffset = originalIntent.getIntExtra("viewOffset", 0);
+    }
+}
+
             }
         }
         catch (Exception e)
