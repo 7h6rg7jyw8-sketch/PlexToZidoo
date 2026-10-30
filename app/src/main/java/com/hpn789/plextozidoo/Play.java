@@ -80,30 +80,9 @@ public class Play extends AppCompatActivity
 
     private boolean useNewZdiooPlayer()
     {
-        try
-        {
-            PackageInfo packageInfo;
-            try
-            {
-                packageInfo = getPackageManager().getPackageInfo("com.zidoo.player", 0);
-            }
-            catch (Exception e)
-            {
-                packageInfo = null;
-            }
-
-            if (packageInfo != null)
-            {
-                return true;
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return false;
+        return true;
     }
+
 
     @Override
     protected void onRestart()
