@@ -169,17 +169,8 @@ public class Play extends AppCompatActivity
         textView2.setText(String.format(Locale.ENGLISH, "Intent: %s\n\nPath Substitution: %s\n\nVideo Path: %s\n\nView Offset: %d\n\nDuration: %d\n\nRating Key: %s\n\nPart Key: %s\n\nPart ID: %s\n\nLibrary Section: %s\n\nMedia Type: %s\n\nSelected Audio Index: %d\n\nSelected Subtitle Index: %d\n\nVideo Index: %d\n\nParent Rating Key: %s\n\nNew Zidoo Player: %b\n\nNew Intent: %s", originalIntentToPrint, pathToPrint, videoPath, viewOffset, duration, ratingKey, partKey, partId, librarySection, mediaType, selectedAudioIndex, selectedSubtitleIndex, videoIndex, parentRatingKey, useNewZdiooPlayer, newIntentToPrint));
     }
 
-        private void showDebugPageOrSendIntent()
+    private void showDebugPageOrSendIntent()
     {
-        // Obsługa tokena autoryzacyjnego Plex dla strumieni HTTP/HTTPS oraz odtwarzacz Zidoo
-        if (!directPath.isEmpty() && (directPath.startsWith("http://") || directPath.startsWith("https://")))
-        {
-            if (!token.isEmpty() && !directPath.contains("X-Plex-Token="))
-            {
-                directPath += (directPath.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
-            }
-        }
-
         if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("useZidooPlayer", true))
         {
             buildZidooIntent(directPath, viewOffset);
@@ -188,20 +179,6 @@ public class Play extends AppCompatActivity
         {
             buildDefaultIntent(directPath);
         }
-
-        // Aktualizacja pola tekstowego lub bezpośrednie odtworzenie filmu w zależności od flagi debugowania
-        if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("debug", false))
-        {
-            updateDebugPage();
-            playButton.setEnabled(true);
-            playButton.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            playButton.callOnClick();
-        }
-    }
-
 
         // If the debug flag is on then update the text field
         if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("debug", false))
