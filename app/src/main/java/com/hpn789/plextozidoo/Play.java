@@ -290,30 +290,6 @@ public class Play extends AppCompatActivity
 
     private void doSubstitution(String path)
     {
-         if (originalIntent != null && originalIntent.getDataString() != null) {
-            String dataStr = originalIntent.getDataString();
-            if (dataStr.startsWith("http://") || dataStr.startsWith("https://")) {
-                if (!dataStr.contains("192.168.50.138")) {
-                    if (!token.isEmpty() && !directPath.contains("X-Plex-Token=")) {
-                        directPath += (directPath.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
-                    }
-                    Intent internetIntent = new Intent(Intent.ACTION_VIEW);
-                    internetIntent.setClassName("com.android.gallery3d", "com.android.gallery3d.app.MovieActivity");
-                    internetIntent.setDataAndTypeAndNormalize(Uri.parse(directPath), "video/*");
-                    internetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (viewOffset > 0) {
-                        internetIntent.putExtra("position", viewOffset);
-                        internetIntent.putExtra("from_start", false);
-                    }
-                    startActivity(internetIntent);
-                    finish();
-                    return;
-                }
-            }
-        }
-
-
-
         // Check if we can actually do the substitution, if not then pass along the original file and see if it plays
         String[] pref_index = {"", "_02", "_03", "_04", "_05", "_06", "_07", "_08", "_09", "_10"};
         for (String s: pref_index)
@@ -707,12 +683,6 @@ catch (Exception e)
 
     protected void buildZidooIntent(String path, int viewOffset)
     {
-                if (path != null && (path.startsWith("http://") || path.startsWith("https://"))) {
-            if (token != null && !token.isEmpty() && !path.contains("X-Plex-Token=")) {
-                path += (path.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
-            }
-        }
-
         // see https://github.com/Andy2244/jellyfin-androidtv-zidoo/blob/Zidoo-Edition/app/src/main/java/org/jellyfin/androidtv/ui/playback/ExternalPlayerActivity.java
         // NOTE: This code requires the new ZIDOO API to work.
         //       For Z9X and Z9X Pro lines that means firmware version 6.4.42+
