@@ -290,16 +290,34 @@ public class Play extends AppCompatActivity
 
     private void doSubstitution(String path)
     {
-                // Sprawdzamy, czy adres z Plezy to zewnętrzny strumień internetowy
+                      // Jeśli to zdalny strumień internetowy, omijamy mapowanie SMB i uruchamiamy czysty player bez blokad
         if (originalIntent != null && originalIntent.getDataString() != null) {
             String dataStr = originalIntent.getDataString();
             if (dataStr.startsWith("http://") || dataStr.startsWith("https://")) {
-                // Jeśli adres NIE zawiera Twojego domowego IP (podmień poniżej na swoje domowe IP, np. 192.168.50.138)
                 if (!dataStr.contains("192.168.50.138")) {
-                    return; // Blokujemy zamianę na SMB, pozwalamy na strumień WAN przez internet
+                    // Doklejamy token bezpośrednio do ścieżki, jeśli jeszcze go nie ma
+                    if (!token.isEmpty() && !directPath.contains("X-Plex-Token=")) {
+                        directPath += (directPath.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
+                    }
+                    
+                    // Budujemy czysty, lekki Intent – dokładnie taki, jakim Plezy uruchamia Zidoo
+                    Intent internetIntent = new Intent(Intent.ACTION_VIEW);
+                    internetIntent.setDataAndTypeAndNormalize(Uri.parse(directPath), "video/*");
+                    
+                    // Wstrzykujemy nasz działający czas wznawiania
+                    if (viewOffset > 0) {
+                        internetIntent.putExtra("position", viewOffset);
+                        internetIntent.putExtra("from_start", false);
+                    }
+                    
+                    // Uruchamiamy odtwarzacz i natychmiast zamykamy okno debugowania PlexToZidoo
+                    startActivity(internetIntent);
+                    finish();
+                    return;
                 }
             }
         }
+
 
 
         // Check if we can actually do the substitution, if not then pass along the original file and see if it plays
