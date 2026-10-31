@@ -290,27 +290,21 @@ public class Play extends AppCompatActivity
 
     private void doSubstitution(String path)
     {
-                      // Jeśli to zdalny strumień internetowy, omijamy mapowanie SMB i uruchamiamy czysty player bez blokad
-        if (originalIntent != null && originalIntent.getDataString() != null) {
+         if (originalIntent != null && originalIntent.getDataString() != null) {
             String dataStr = originalIntent.getDataString();
             if (dataStr.startsWith("http://") || dataStr.startsWith("https://")) {
                 if (!dataStr.contains("192.168.50.138")) {
-                    // Doklejamy token bezpośrednio do ścieżki, jeśli jeszcze go nie ma
                     if (!token.isEmpty() && !directPath.contains("X-Plex-Token=")) {
                         directPath += (directPath.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
                     }
-                    
-                    // Budujemy czysty, lekki Intent – dokładnie taki, jakim Plezy uruchamia Zidoo
                     Intent internetIntent = new Intent(Intent.ACTION_VIEW);
+                    internetIntent.setClassName("com.android.gallery3d", "com.android.gallery3d.app.MovieActivity");
                     internetIntent.setDataAndTypeAndNormalize(Uri.parse(directPath), "video/*");
-                    
-                    // Wstrzykujemy nasz działający czas wznawiania
+                    internetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if (viewOffset > 0) {
                         internetIntent.putExtra("position", viewOffset);
                         internetIntent.putExtra("from_start", false);
                     }
-                    
-                    // Uruchamiamy odtwarzacz i natychmiast zamykamy okno debugowania PlexToZidoo
                     startActivity(internetIntent);
                     finish();
                     return;
