@@ -683,6 +683,12 @@ catch (Exception e)
 
     protected void buildZidooIntent(String path, int viewOffset)
     {
+                if (path != null && (path.startsWith("http://") || path.startsWith("https://"))) {
+            if (token != null && !token.isEmpty() && !path.contains("X-Plex-Token=")) {
+                path += (path.contains("?") ? "&" : "?") + "X-Plex-Token=" + token;
+            }
+        }
+
         // see https://github.com/Andy2244/jellyfin-androidtv-zidoo/blob/Zidoo-Edition/app/src/main/java/org/jellyfin/androidtv/ui/playback/ExternalPlayerActivity.java
         // NOTE: This code requires the new ZIDOO API to work.
         //       For Z9X and Z9X Pro lines that means firmware version 6.4.42+
