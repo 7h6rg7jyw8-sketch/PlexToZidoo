@@ -290,10 +290,17 @@ public class Play extends AppCompatActivity
 
     private void doSubstitution(String path)
     {
-                if (remoteStream)
-        {
-            return;
+                // Sprawdzamy, czy adres z Plezy to zewnętrzny strumień internetowy
+        if (originalIntent != null && originalIntent.getDataString() != null) {
+            String dataStr = originalIntent.getDataString();
+            if (dataStr.startsWith("http://") || dataStr.startsWith("https://")) {
+                // Jeśli adres NIE zawiera Twojego domowego IP (podmień poniżej na swoje domowe IP, np. 192.168.50.138)
+                if (!dataStr.contains("192.168.50.138")) {
+                    return; // Blokujemy zamianę na SMB, pozwalamy na strumień WAN przez internet
+                }
+            }
         }
+
 
         // Check if we can actually do the substitution, if not then pass along the original file and see if it plays
         String[] pref_index = {"", "_02", "_03", "_04", "_05", "_06", "_07", "_08", "_09", "_10"};
