@@ -290,6 +290,11 @@ public class Play extends AppCompatActivity
 
     private void doSubstitution(String path)
     {
+                if (remoteStream)
+        {
+            return;
+        }
+
         // Check if we can actually do the substitution, if not then pass along the original file and see if it plays
         String[] pref_index = {"", "_02", "_03", "_04", "_05", "_06", "_07", "_08", "_09", "_10"};
         for (String s: pref_index)
