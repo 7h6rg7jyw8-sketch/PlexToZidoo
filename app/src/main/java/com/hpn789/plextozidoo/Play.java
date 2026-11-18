@@ -78,26 +78,22 @@ public class Play extends AppCompatActivity
         setContentView(R.layout.activity_play);
     }
 
-      private boolean useNewZdiooPlayer()
+             private boolean useNewZdiooPlayer()
     {
         try
         {
-            // 1. Klasyczny test autora (dla starszych wersji Androida)
-            PackageInfo packageInfo = null;
-            try {
+            PackageInfo packageInfo;
+            try
+            {
                 packageInfo = getPackageManager().getPackageInfo("com.zidoo.player", 0);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 packageInfo = null;
             }
 
-            if (packageInfo != null) {
-                return true;
-            }
-
-            // 2. NOWOŚĆ: Alternatywny, niezawodny test dla nowszych Androidów (odpytanie systemu przez Intent)
-            Intent intent = new Intent();
-            intent.setClassName("com.zidoo.player", "com.zidoo.player.VideoPlayActivity");
-            if (getPackageManager().queryIntentActivities(intent, 0).size() > 0) {
+            if (packageInfo != null)
+            {
                 return true;
             }
         }
@@ -483,14 +479,7 @@ public class Play extends AppCompatActivity
         super.onStart();
 
         originalIntent = getIntent();
-// --- POPRAWKA DLA PLEZY ---
-if (originalIntent != null && originalIntent.hasExtra("position")) {
-    viewOffset = originalIntent.getIntExtra("position", 0);
-    if (viewOffset == 0) {
-        viewOffset = (int) originalIntent.getLongExtra("position", 0L);
-    }
-}
-// --- KONIEC POPRAWKI ---
+
 
 
         String inputString = originalIntent.getDataString();
