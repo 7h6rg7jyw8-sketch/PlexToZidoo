@@ -1,11 +1,18 @@
 # 🚀 PlexToZidoo Mod (Plezy Client Support)
 
+This is a modified version of **PlexToZidoo** that adds support for the alternative **Plezy** client. It fixes the video resume/offset point issue by intercepting the `"position"` extra sent by Plezy, while maintaining 100% backwards compatibility with the official Plex app.
 
-👉 👉 **[DOWNLOAD APK](https://github.com/7h6rg7jyw8-sketch/PlexToZidoo/releases)**
+👉 **[DOWNLOAD LATEST APK](https://github.com)**
 
-**** This is a modified version of PlexToZidoo that adds full support for the alternative **Plezy** client. It fixes the video resume/offset point issue by properly intercepting the position parameter sent by Plezy. Maintains 100% backwards compatibility with the official Plex app and all Zidoo models.
+### What's new in this Mod (v1.0.1):
+* **Plezy Integration:** Intercepts the `"position"` intent extra from Plezy so the resume point/offset works properly.
+* **Clean & Minimal Codebase:** Simplified based on feedback from the original author (`@bowlingbeeg`) to keep the diff clean and safe.
+* **100% Backwards Compatible:** Works seamlessly with the official Plex app just like before.
 
+### Known Limitations:
+* **Audio & Subtitles:** Plezy does not pass audio and subtitle stream indexes in its intent yet. The Zidoo player will pick them automatically based on your Zidoo global language settings.
 ---
+
 # PlexToZidoo
 An external player to make link between Plex app or ZidooPlexMod and the native Zidoo player
 
