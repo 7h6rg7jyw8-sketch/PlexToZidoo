@@ -4,17 +4,21 @@ This is a modified version of **PlexToZidoo** that adds support for the alternat
 
 👉 **[DOWNLOAD LATEST APK](https://github.com)**
 
-### What's new & supported in this Mod (v1.0.1):
-* **Plezy Integration:** Intercepts the `"position"` intent extra from Plezy so the resume point/offset works properly.
-* **Audio & Subtitles Support:** Plezy uses your Plex Server's global language settings (which synchronize two-way and can be edited either in Plezy or directly in your Plex account/app settings). Even though Plezy doesn't pass track indexes in its intent, **PlexToZidoo** automatically fetches the active stream selections via the Plex API (`audio-idx` / `subtitle-idx`) and passes them to the Zidoo player.
-* **Clean & Minimal Codebase:** Simplified based on feedback from the original author (`@bowlingbeeg`) to keep the diff clean and safe.
+### What's new in this Mod (v1.0.1):
+* **Plezy Resume Support:** Intercepts the `"position"` intent extra from Plezy so the video resume point/offset works properly.
+* **Clean & Minimal Codebase:** Simplified based on feedback from the original author (`@bowlingbeeg`) to keep the diff minimal and safe.
 * **100% Backwards Compatible:** Works seamlessly with the official Plex app just like before.
+
+### Compatibility Notes (Audio & Subtitles):
+* **Works out of the box:** Even though Plezy doesn't pass audio or subtitle track indexes directly in its intent, **PlexToZidoo's built-in Plex API integration** automatically fetches the active stream selections from your Plex Server (`audio-idx` / `subtitle-idx`) and passes them to the Zidoo player.
+* **Language Preferences:** Plezy uses your Plex Server's global language settings, which synchronize two-way and can be edited either in Plezy or directly in your Plex account/app settings.
 
 ### Requirements (Zidoo Settings):
 * **Enable Bookmarks:** For playback position saving and resume functionality to work properly, make sure **Bookmarks** are enabled and configured in your Zidoo global settings (**Settings ➡️ Playback ➡️ Bookmarks**, ensuring *Display Mode* is not set to *Off* and start/end thresholds are configured to your preference).
 * **Disable Play Mode (Loop/Auto-next):** Set **Play Mode** to **Off** (**Settings ➡️ Playback ➡️ Play Mode ➡️ Off**). Otherwise, the Zidoo player may automatically restart the video or play the next file in the folder instead of closing, which prevents the watched status from updating on the Plex server.
 
 ---
+
 
 
 # PlexToZidoo
