@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Generate keystore
         run: |
-          keytool -genkey -v -keystore release.keystore -alias plextozidoo -keyalg RSA -keysize 2048 -validity 10000 -storepass haslo123 -keypass haslo123 -dname "CN=PlexToZidoo"
+          keytool -genkey -v -keystore release.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
           base64 -w 0 release.keystore > keystore_base64.txt
 
       - name: Upload keystore
