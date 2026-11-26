@@ -748,10 +748,11 @@ catch (Exception e)
 
     }
 
-            protected void onActivityResult(int requestCode, int resultCode, Intent data)
+               protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        boolean isPlezy = callerPackage != null && callerPackage.toLowerCase().contains("plezy");
         boolean issuePlexIntent = true;
 
         if(resultCode == Activity.RESULT_OK && requestCode == 98 && data != null)
@@ -791,6 +792,17 @@ catch (Exception e)
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         response ->
                         {
+                            if (!isPlezy && !server.isEmpty())
+                            {
+                                try
+                                {
+                                    Intent plex = new Intent(Intent.ACTION_VIEW);
+                                    plex.setPackage("com.plexapp.android");
+                                    plex.setData(Uri.parse("plex://server://" + server + "/com.plexapp.plugins.library/library/metadata/" + ratingKey));
+                                    startActivity(plex);
+                                }
+                                catch (Exception ignored) { }
+                            }
                             finish();
                         },
                         error ->
@@ -810,6 +822,7 @@ catch (Exception e)
             finish();
         }
     }
+
 
 
     public static String intentToString(Intent intent)
