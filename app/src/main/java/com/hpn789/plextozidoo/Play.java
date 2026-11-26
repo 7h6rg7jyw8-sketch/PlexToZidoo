@@ -63,7 +63,6 @@ public class Play extends AppCompatActivity
     private boolean remoteStream = false;
     private boolean zdmc = false;
     private int mediaIndex = -1;
-    private String callerPackage = "";
 
     private TextView textView1;
     private TextView textView2;
@@ -481,12 +480,7 @@ public class Play extends AppCompatActivity
 
         originalIntent = getIntent();
 
-        String caller = getCallingPackage();
-        if (caller == null && getReferrer() != null && "android-app".equals(getReferrer().getScheme()))
-        {
-            caller = getReferrer().getHost();
-        }
-        callerPackage = (caller != null) ? caller : "";
+
 
         String inputString = originalIntent.getDataString();
         directPath = inputString;
@@ -748,14 +742,12 @@ catch (Exception e)
 
     }
 
-               protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        boolean isPlezy = callerPackage != null && callerPackage.toLowerCase().contains("plezy");
         boolean issuePlexIntent = true;
-
-        if(resultCode == Activity.RESULT_OK && requestCode == 98 && data != null)
+        if(resultCode == Activity.RESULT_OK && requestCode == 98)
         {
             int position = data.getIntExtra("position", 0);
             if(position > 0 && !address.isEmpty() && !ratingKey.isEmpty() && !token.isEmpty() && !zdmc)
@@ -773,7 +765,6 @@ catch (Exception e)
                         if(videoIndex > 0 && parentRatingKey != null)
                         {
                             searchFiles();
-                            return;
                         }
                     }
                 }
@@ -782,9 +773,9 @@ catch (Exception e)
                     // Update progress
                     url = address + "/:/progress?key=" + ratingKey + "&identifier=com.plexapp.plugins.library&time=" + position + "&state=stopped&" + tokenParameter + token;
 
+                    // Can't update the progress on remote streams so just return .. get "Unauthorized" for some reason
                     if(remoteStream)
                     {
-                        finish();
                         return;
                     }
                 }
@@ -792,38 +783,33 @@ catch (Exception e)
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         response ->
                         {
-                            if (!isPlezy && !server.isEmpty())
+                            Intent plex = new Intent(Intent.ACTION_VIEW);
+                            plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
+                            if(!server.isEmpty())
                             {
-                                try
-                                {
-                                    Intent plex = new Intent(Intent.ACTION_VIEW);
-                                    plex.setPackage("com.plexapp.android");
-                                    plex.setData(Uri.parse("plex://server://" + server + "/com.plexapp.plugins.library/library/metadata/" + ratingKey));
-                                    startActivity(plex);
-                                }
-                                catch (Exception ignored) { }
+                                // This will try and automatically refresh the plex client with the progress/watched status we just updated on the plex server
+                                plex.setData(Uri.parse("plex://server://" + server + "/com.plexapp.plugins.library/library/metadata/" + ratingKey));
                             }
-                            finish();
+
+                            startActivity(plex);
                         },
-                        error ->
-                        {
-                            Toast.makeText(getApplicationContext(), "Couldn't update progress or watched status", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
+                        error -> Toast.makeText(getApplicationContext(), "Couldn't update progress or watched status", Toast.LENGTH_LONG).show()
                 );
 
                 issuePlexIntent = false;
+
+                // Add the request to the RequestQueue.
                 queue.add(stringRequest);
             }
         }
 
         if(issuePlexIntent && !zdmc)
         {
-            finish();
+            Intent plex = new Intent(Intent.ACTION_VIEW);
+            plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
+            startActivity(plex);
         }
     }
-
-
 
     public static String intentToString(Intent intent)
     {
