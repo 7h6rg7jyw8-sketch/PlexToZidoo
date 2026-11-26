@@ -748,11 +748,10 @@ catch (Exception e)
 
     }
 
-        protected void onActivityResult(int requestCode, int resultCode, Intent data)
+            protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        boolean isPlezy = callerPackage.toLowerCase().contains("plezy");
         boolean issuePlexIntent = true;
 
         if(resultCode == Activity.RESULT_OK && requestCode == 98 && data != null)
@@ -792,17 +791,6 @@ catch (Exception e)
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         response ->
                         {
-                            if (!isPlezy)
-
-                            {
-                                Intent plex = new Intent(Intent.ACTION_VIEW);
-                                plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
-                                if(!server.isEmpty())
-                                {
-                                    plex.setData(Uri.parse("plex://server://" + server + "/com.plexapp.plugins.library/library/metadata/" + ratingKey));
-                                }
-                                startActivity(plex);
-                            }
                             finish();
                         },
                         error ->
@@ -819,16 +807,10 @@ catch (Exception e)
 
         if(issuePlexIntent && !zdmc)
         {
-            if (!isPlezy)
-
-            {
-                Intent plex = new Intent(Intent.ACTION_VIEW);
-                plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
-                startActivity(plex);
-            }
             finish();
         }
     }
+
 
     public static String intentToString(Intent intent)
     {
