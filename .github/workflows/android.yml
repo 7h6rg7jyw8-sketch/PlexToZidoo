@@ -21,10 +21,14 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Restore persistent debug keystore
+   - name: Restore persistent debug keystore
       run: |
         mkdir -p ~/.android
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ~/.android/debug.keystore
+        keytool -storepasswd -keystore ~/.android/debug.keystore -storepass haslo123 -new android || true
+        keytool -keypasswd -keystore ~/.android/debug.keystore -alias plextozidoo -storepass android -keypass haslo123 -new android || true
+        keytool -changealias -keystore ~/.android/debug.keystore -alias plextozidoo -destalias androiddebugkey -storepass android || true
+
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
