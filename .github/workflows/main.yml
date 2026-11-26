@@ -1,0 +1,20 @@
+name: Generate Keystore
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate keystore
+        run: |
+          keytool -genkey -v -keystore release.keystore -alias plextozidoo -keyalg RSA -keysize 2048 -validity 10000 -storepass haslo123 -keypass haslo123 -dname "CN=PlexToZidoo"
+          base64 -w 0 release.keystore > keystore_base64.txt
+
+      - name: Upload keystore
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-keystore
+          path: |
+            release.keystore
+            keystore_base64.txt
