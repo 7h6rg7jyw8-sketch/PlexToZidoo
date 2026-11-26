@@ -752,7 +752,7 @@ catch (Exception e)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        boolean isOfficialPlex = "com.plexapp.android".equals(callerPackage);
+        boolean isPlezy = callerPackage.toLowerCase().contains("plezy");
         boolean issuePlexIntent = true;
 
         if(resultCode == Activity.RESULT_OK && requestCode == 98 && data != null)
@@ -792,7 +792,8 @@ catch (Exception e)
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         response ->
                         {
-                            if (isOfficialPlex)
+                            if (!isPlezy)
+
                             {
                                 Intent plex = new Intent(Intent.ACTION_VIEW);
                                 plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
@@ -818,7 +819,8 @@ catch (Exception e)
 
         if(issuePlexIntent && !zdmc)
         {
-            if (isOfficialPlex)
+            if (!isPlezy)
+
             {
                 Intent plex = new Intent(Intent.ACTION_VIEW);
                 plex.setClassName("com.plexapp.android", "com.plexapp.plex.activities.SplashActivity");
